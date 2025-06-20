@@ -13,11 +13,11 @@ bookRoutes.post("/books", async (req: Request, res: Response) => {
       message: "Book created successfully",
       data: result,
     });
-  } catch (error) {
+  } catch (error: any) {
     res.status(500).send({
       success: false,
       message: "Book create Error",
-      data: error,
+      data: error?.message,
     });
   }
 });
@@ -41,11 +41,11 @@ bookRoutes.get("/books", async (req: Request, res: Response) => {
       message: "Books retrieved successfully",
       data: result,
     });
-  } catch (error) {
+  } catch (error: any) {
     res.status(500).send({
       success: false,
       message: "All book filter get error",
-      data: error,
+      data: error?.message,
     });
   }
 });
@@ -60,11 +60,11 @@ bookRoutes.get("/books/:bookId", async (req: Request, res: Response) => {
       message: "Book retrieved successfully",
       data: result,
     });
-  } catch (error) {
+  } catch (error: any) {
     res.status(500).send({
       success: false,
       message: "single book get error",
-      data: error,
+      data: error?.message,
     });
   }
 });
@@ -84,11 +84,11 @@ bookRoutes.put("/books/:bookId", async (req: Request, res: Response) => {
       message: "Book updated successfully",
       data: result,
     });
-  } catch (error) {
+  } catch (error: any) {
     res.status(500).send({
       success: false,
       message: "book update error",
-      data: error,
+      data: error?.message,
     });
   }
 });
@@ -102,11 +102,11 @@ bookRoutes.delete("/books/:bookId", async (req: Request, res: Response) => {
       message: "Book deleted successfully",
       data: null,
     });
-  } catch (error) {
+  } catch (error: any) {
     res.status(500).send({
       success: false,
       message: "book delete error",
-      data: error,
+      data: error?.message,
     });
   }
 });
