@@ -68,7 +68,7 @@ bookRoutes.get("/books/:bookId", async (req: Request, res: Response) => {
     });
   }
 });
-
+// single book copies update success
 bookRoutes.put("/books/:bookId", async (req: Request, res: Response) => {
   try {
     const id = req.params.bookId;
@@ -88,6 +88,24 @@ bookRoutes.put("/books/:bookId", async (req: Request, res: Response) => {
     res.status(500).send({
       success: false,
       message: "book update error",
+      data: error,
+    });
+  }
+});
+// single book delete oparation success
+bookRoutes.delete("/books/:bookId", async (req: Request, res: Response) => {
+  try {
+    const id = req.params.bookId;
+    const result = await Book.findByIdAndDelete(id);
+    res.status(200).send({
+      success: true,
+      message: "Book deleted successfully",
+      data: null,
+    });
+  } catch (error) {
+    res.status(500).send({
+      success: false,
+      message: "book delete error",
       data: error,
     });
   }
