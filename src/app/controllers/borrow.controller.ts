@@ -19,3 +19,45 @@ borrowRoutes.post("/borrow", async (req: Request, res: Response) => {
     });
   }
 });
+// borrow data get oparation success
+borrowRoutes.get("/borrow", async (req: Request, res: Response) => {
+  try {
+    const pipeline = await Borrow.aggregate([
+      {
+        $group: { _id: "$book", totalQuantity: { $sum: "$quantity" } },
+      },
+      {
+        $lookup: {
+          from: "books",
+          localField: "_id",
+          foreignField: "_id",
+          as: "bookDetails",
+        },
+      },
+      {
+        $unwind: "$bookDetails",
+      },
+      {
+        $project: {
+          _id: 0,
+          totalQuantity: 1,
+          book: {
+            title: "$bookDetails.title",
+            isbn: "$bookDetails.isbn",
+          },
+        },
+      },
+    ]);
+    res.status(200).send({
+      success: true,
+      message: "Borrowed books summary retrieved successfully",
+      data: pipeline,
+    });
+  } catch (error: any) {
+    res.status(500).send({
+      success: false,
+      message: "borrow book error",
+      data: error?.message,
+    });
+  }
+});
