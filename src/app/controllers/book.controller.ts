@@ -1,8 +1,8 @@
 import express, { Request, Response } from "express";
 import Book from "../models/book.model";
-
+import { ObjectId } from "mongodb";
 export const bookRoutes = express.Router();
-
+// book database add oparation
 bookRoutes.post("/books", async (req: Request, res: Response) => {
   try {
     const body = req.body;
@@ -21,7 +21,7 @@ bookRoutes.post("/books", async (req: Request, res: Response) => {
     });
   }
 });
-
+// all book method oparation
 bookRoutes.get("/books", async (req: Request, res: Response) => {
   try {
     const filterBook = req?.query?.filter as string;
@@ -44,7 +44,26 @@ bookRoutes.get("/books", async (req: Request, res: Response) => {
   } catch (error) {
     res.status(500).send({
       success: false,
-      message: "Book Get Error",
+      message: "All book filter get error",
+      data: error,
+    });
+  }
+});
+// single book get method oparation
+bookRoutes.get("/books/:bookId", async (req: Request, res: Response) => {
+  try {
+    const id = req.params.bookId;
+    const query = { _id: new ObjectId(id) };
+    const result = await Book.findById(query);
+    res.status(201).send({
+      success: true,
+      message: "Book retrieved successfully",
+      data: result,
+    });
+  } catch (error) {
+    res.status(500).send({
+      success: false,
+      message: "single book get error",
       data: error,
     });
   }
