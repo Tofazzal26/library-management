@@ -21,3 +21,31 @@ bookRoutes.post("/books", async (req: Request, res: Response) => {
     });
   }
 });
+
+bookRoutes.get("/books", async (req: Request, res: Response) => {
+  try {
+    const filterBook = req?.query?.filter as string;
+    const sortBy = (req?.query?.sortBy as string) || "createdAt";
+    const sort = req?.query?.sort === "desc" ? -1 : 1;
+    const limit = req?.query?.limit as string;
+    const numberLimit = parseInt(limit) || 10;
+    let query: any = {};
+    if (filterBook) {
+      query.genre = filterBook;
+    }
+    const sortFilter: any = {};
+    sortFilter[sortBy] = sort;
+    const result = await Book.find(query).sort(sortFilter).limit(numberLimit);
+    res.status(201).send({
+      success: true,
+      message: "Books retrieved successfully",
+      data: result,
+    });
+  } catch (error) {
+    res.status(500).send({
+      success: false,
+      message: "Book Get Error",
+      data: error,
+    });
+  }
+});
