@@ -20,38 +20,44 @@ interface IBook extends mongoose.Document {
   isAvailable(): boolean;
 }
 
-const bookSchema = new mongoose.Schema<IBook>({
-  title: {
-    type: String,
-    required: true,
+const bookSchema = new mongoose.Schema<IBook>(
+  {
+    title: {
+      type: String,
+      required: true,
+    },
+    author: {
+      type: String,
+      required: true,
+    },
+    genre: {
+      type: String,
+      required: true,
+      enum: genres,
+    },
+    isbn: {
+      type: String,
+      required: true,
+      unique: true,
+    },
+    description: {
+      type: String,
+    },
+    copies: {
+      type: Number,
+      required: true,
+      min: [0, "Copies must be grater than 0"],
+    },
+    available: {
+      type: Boolean,
+      default: true,
+    },
   },
-  author: {
-    type: String,
-    required: true,
-  },
-  genre: {
-    type: String,
-    required: true,
-    enum: genres,
-  },
-  isbn: {
-    type: String,
-    required: true,
-    unique: true,
-  },
-  description: {
-    type: String,
-  },
-  copies: {
-    type: Number,
-    required: true,
-    min: [0, "Copies must be grater than 0"],
-  },
-  available: {
-    type: Boolean,
-    default: true,
-  },
-});
+  {
+    timestamps: true,
+    versionKey: false,
+  }
+);
 
 bookSchema.methods.isAvailable = function () {
   return this.copies > 0;
