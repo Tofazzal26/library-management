@@ -36,7 +36,7 @@ bookRoutes.get("/books", async (req: Request, res: Response) => {
     const sortFilter: any = {};
     sortFilter[sortBy] = sort;
     const result = await Book.find(query).sort(sortFilter).limit(numberLimit);
-    res.status(201).send({
+    res.status(200).send({
       success: true,
       message: "Books retrieved successfully",
       data: result,
@@ -55,7 +55,7 @@ bookRoutes.get("/books/:bookId", async (req: Request, res: Response) => {
     const id = req.params.bookId;
     const query = { _id: new ObjectId(id) };
     const result = await Book.findById(query);
-    res.status(201).send({
+    res.status(200).send({
       success: true,
       message: "Book retrieved successfully",
       data: result,
@@ -64,6 +64,30 @@ bookRoutes.get("/books/:bookId", async (req: Request, res: Response) => {
     res.status(500).send({
       success: false,
       message: "single book get error",
+      data: error,
+    });
+  }
+});
+
+bookRoutes.put("/books/:bookId", async (req: Request, res: Response) => {
+  try {
+    const id = req.params.bookId;
+    const body = req.body;
+    console.log(body);
+    const result = await Book.findByIdAndUpdate(
+      id,
+      { $set: { copies: body.copies } },
+      { new: true }
+    );
+    res.status(200).send({
+      success: true,
+      message: "Book updated successfully",
+      data: result,
+    });
+  } catch (error) {
+    res.status(500).send({
+      success: false,
+      message: "book update error",
       data: error,
     });
   }
