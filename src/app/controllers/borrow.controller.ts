@@ -11,11 +11,15 @@ borrowRoutes.post("/borrow", async (req: Request, res: Response) => {
       message: "Book borrowed successfully",
       data: borrow,
     });
-  } catch (error: any) {
+  } catch (error: unknown) {
+    let errorMessage = "Something went wrong";
+    if (error instanceof Error) {
+      errorMessage = error.message;
+    }
     res.status(500).send({
       success: false,
       message: "borrow book error",
-      data: error?.message,
+      data: errorMessage,
     });
   }
 });
@@ -53,11 +57,15 @@ borrowRoutes.get("/borrow", async (req: Request, res: Response) => {
       message: "Borrowed books summary retrieved successfully",
       data: pipeline,
     });
-  } catch (error: any) {
+  } catch (error: unknown) {
+    let errorMessage = "Something went wrong";
+    if (error instanceof Error) {
+      errorMessage = error.message;
+    }
     res.status(500).send({
       success: false,
       message: "borrow book error",
-      data: error?.message,
+      data: errorMessage,
     });
   }
 });
