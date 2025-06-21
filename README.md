@@ -69,7 +69,7 @@ A Restful API built with Express, TypeScript, and MongoDB, designed to manage bo
 `POST` `https://library-management-six-xi.vercel.app/api/borrow`
 
 
-### 8. Borrow Book Summary
+### 7. Borrow Book Summary
 
 `GET` `https://library-management-six-xi.vercel.app/api/borrow`
 
